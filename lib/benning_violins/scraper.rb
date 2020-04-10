@@ -25,6 +25,10 @@ class BenningViolins::Scraper
          
          instrument_hash_array
     end
+
+    def self.scrape_details_page(item_url)
+        #adds lot#, maker, price, description, and terms to Instrument Objects
+    end
 end
 
 
