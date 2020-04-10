@@ -32,6 +32,7 @@
 4. Scraper Class
     - Scrapes Benning Violin website sales page for inventory choices
     - Scrapes inventory page when called and makes key/value pairs with scraped data
+    - Scrapes details 
     - returns Instrument Hash to
 
 
