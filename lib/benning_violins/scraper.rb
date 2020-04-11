@@ -1,10 +1,14 @@
 require "open-uri"
-require "nokogiri"
-require "pry"
+
 
 class BenningViolins::Scraper
 
     #Rename some of the instance variables to make some sense!
+
+    def self.scrape_inventory()
+      #scrapes inventory names and links
+      #creates Inventory objects in each.do
+    end
 
     def self.scrape_instruments(inventory_url)
         instrument_hash_array = []
@@ -43,7 +47,7 @@ class BenningViolins::Scraper
             details = old_details.sub(nbsp, "") #delete text nbsp
            #Rename detail_one "label"
             detail_one = thing.css("strong").text.strip #details label is in <strong> tag
-
+            #convert label to lower case
             if detail_one.include?("Type")
               instrument_details_hash[:type]= details
             elsif detail_one.include?("Year")
