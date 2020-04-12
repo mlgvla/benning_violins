@@ -2,7 +2,4 @@
 
 require_relative "../lib/benning_violins"
 
-
-# BenningViolins::CLI.new.call
-
-BenningViolins::CLI.new.run
+BenningViolins::CLI.new.call
