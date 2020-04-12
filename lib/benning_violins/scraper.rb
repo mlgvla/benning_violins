@@ -8,12 +8,30 @@ class BenningViolins::Scraper
     inventories = doc.css("div.djc_clearfix div.djc_subcategory")
 
     inventories.each do |inventory|
+        name = inventory.css("h3 a").text.strip
+        if name.downcase == "bows"
+          self.scrape_bows
+        else
+          url = inventory.css("a").attr("href").value
+          BenningViolins::Inventory.new(name, url)
+        end
+    end
+  end
+
+  def self.scrape_bows
+    #additional method called by scrape_inventory to scrape the nested menu choice of bow type
+
+    site = "https://www.benningviolins.com/Fine-Bows-Catalog-Fine-Violin-Viola-Cello-Bows-for-Sale.html"
+    doc = Nokogiri::HTML(open(site))
+
+    inventories = doc.css("div.djc_clearfix  div.djc_subcategory")
+
+    inventories.each do |inventory|
       name = inventory.css("h3 a").text.strip
       url = inventory.css("a").attr("href").value
       BenningViolins::Inventory.new(name, url)
     end
   end
-
 
     #Rename some of the instance variables to make some sense!
 

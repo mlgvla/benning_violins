@@ -13,6 +13,7 @@ class BenningViolins::CLI
 
     def get_inventories  
         @inventories = BenningViolins::Inventory.all
+        
     end
 
     def list_inventories
@@ -25,7 +26,7 @@ class BenningViolins::CLI
 
     def get_user_inventory
         inventory_choice = gets.strip.to_i
-        show_inventory(inventory_choice) if valid_input?(inventory_choice) #call show_inventory if valid input
+        show_inventory(inventory_choice) if valid_input?(inventory_choice)
     end
 
     def valid_input?(choice)
