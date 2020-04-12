@@ -1,14 +1,21 @@
-require "open-uri"
-
-
 class BenningViolins::Scraper
 
-    #Rename some of the instance variables to make some sense!
+  def self.scrape_inventory
+    
+    site = "https://www.benningviolins.com/Fine-Instrument-Catalog-Violins-Violas-Cellos-Bows.html"
+    doc = Nokogiri::HTML(open(site))
 
-    def self.scrape_inventory()
-      #scrapes inventory names and links
-      #creates Inventory objects in each.do
+    inventories = doc.css("div.djc_clearfix div.djc_subcategory")
+
+    inventories.each do |inventory|
+      name = inventory.css("h3 a").text.strip
+      url = inventory.css("a").attr("href").value
+      BenningViolins::Inventory.new(name, url)
     end
+  end
+
+
+    #Rename some of the instance variables to make some sense!
 
     def self.scrape_instruments(inventory_url)
         instrument_hash_array = []
