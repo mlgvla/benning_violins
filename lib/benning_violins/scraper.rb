@@ -1,8 +1,9 @@
 class BenningViolins::Scraper
+  BASE_PATH = "https://www.benningviolins.com/"
 
   def self.scrape_inventory
     
-    site = "https://www.benningviolins.com/Fine-Instrument-Catalog-Violins-Violas-Cellos-Bows.html"
+    site = BASE_PATH + "Fine-Instrument-Catalog-Violins-Violas-Cellos-Bows.html"
     doc = Nokogiri::HTML(open(site))
 
     inventories = doc.css("div.djc_clearfix div.djc_subcategory")
@@ -21,7 +22,7 @@ class BenningViolins::Scraper
   def self.scrape_bows
     #additional method called by scrape_inventory to scrape the nested menu choice of bow type
 
-    site = "https://www.benningviolins.com/Fine-Bows-Catalog-Fine-Violin-Viola-Cello-Bows-for-Sale.html"
+    site = BASE_PATH + "Fine-Bows-Catalog-Fine-Violin-Viola-Cello-Bows-for-Sale.html"
     doc = Nokogiri::HTML(open(site))
 
     inventories = doc.css("div.djc_clearfix  div.djc_subcategory")
@@ -33,59 +34,55 @@ class BenningViolins::Scraper
     end
   end
 
-    #Rename some of the instance variables to make some sense!
+  def self.scrape_instruments(inventory)
+    
+    site = BASE_PATH + inventory.url
+    doc = Nokogiri::HTML(open(site))
 
-    def self.scrape_instruments(inventory_url)
-        instrument_hash_array = []
+    instruments = doc.css("div.djc_items .djc_item")
 
-        site = inventory_url
-        doc = Nokogiri::HTML(open(site))
-
-        things = doc.css("div.djc_items .djc_item")
-
-        things.each do |thing|
-            hash = {
-            :name => thing.css("a").text.strip,
-            :url => thing.css("a").attr("href").text
-            }   
-            instrument_hash_array << hash
-         end
-         
-         instrument_hash_array
+    instruments.each do |instrument|
+          
+      name = instrument.css("a").text.strip
+      url = instrument.css("a").attr("href").text
+      BenningViolins::Instrument.new(name, inventory, url)
     end
+  end
 
-    def self.scrape_details_page(instrument_url)
-        #returns details hash to CLI (add_instrument_details)
-        #type, year, price, maker, description, terms(might eliminate category later)
+       #Rename some of the instance variables to make some sense!
 
-        instrument_details_hash = {}
+    def self.scrape_instrument_details(instrument)
+        #tyear, price, maker, description, terms(might eliminate category later)
         
-        site = instrument_url
+        site = BASE_PATH + instrument.url
+        
       
         doc = Nokogiri::HTML(open(site))
         
-        things = doc.css("div.djc_fulltext p")
+        details = doc.css("div.djc_fulltext p")
       
-        things.each do |thing|
+        details.each do |detail|
             nbsp = Nokogiri::HTML("&nbsp;").text #convert HTML nbsp to text nbsp
-            old_details = thing.text.sub(/^[^:]+:\s*/, "") #delete label
-            details = old_details.sub(nbsp, "") #delete text nbsp
-           #Rename detail_one "label"
-            detail_one = thing.css("strong").text.strip #details label is in <strong> tag
+            new_detail = detail.text.sub(/^[^:]+:\s*/, "") #delete label
+            final_detail = new_detail.sub(nbsp, "") #delete text nbsp
+           
+            label = detail.css("strong").text.strip.downcase #details label is in <strong> tag
             #convert label to lower case
-            if detail_one.include?("Type")
-              instrument_details_hash[:type]= details
-            elsif detail_one.include?("Year")
-              instrument_details_hash[:year]= details.to_i 
-            elsif detail_one.include?("Price")
-              instrument_details_hash[:price]= details            
-            elsif detail_one.include?("Description")
-              instrument_details_hash[:description]= details            
-            elsif detail_one.include?("Terms")
-              instrument_details_hash[:terms]= details 
+         
+            if label.include?("maker")
+            instrument.maker = final_detail 
+            elsif label.include?("year") || label.include?("circa")
+              instrument.year = final_detail.to_i 
+            elsif label.include?("price")
+              instrument.price = final_detail            
+            elsif label.include?("description")
+              instrument.description = final_detail            
+            elsif label.include?("terms")
+              instrument.terms = final_detail 
             end
        end
-      return instrument_details_hash
+       binding.pry
+      # return instrument_details_hash
     end
 end
 

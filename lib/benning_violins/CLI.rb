@@ -26,7 +26,7 @@ class BenningViolins::CLI
 
     def get_user_inventory
         inventory_choice = gets.strip.to_i
-        show_inventory(inventory_choice) if valid_input?(inventory_choice)
+        show_instruments_for(inventory_choice) if valid_input?(inventory_choice)
     end
 
     def valid_input?(choice)
@@ -34,10 +34,29 @@ class BenningViolins::CLI
         
     end
 
-    def show_inventory(choice)
-        inventory = @inventories[choice - 1]
-        #inventory.get_instruments
-
+    def show_instruments_for(inventory_choice)
+        inventory = @inventories[inventory_choice - 1]
+        inventory.get_instruments
+        puts "Here is our current inventory of #{inventory.name}:"
+        inventory.instruments.each.with_index(1) do |ins, index|
+            puts "#{index}. #{ins.name}"
+        end
+        get_user_instrument(inventory)
     end
+
+    def get_user_instrument(inventory)
+     
+        puts "Please enter a number to get more details."
+        instrument_choice = gets.strip
+        instrument = inventory.instruments[instrument_choice.to_i - 1] #Instrument object
+      
+        instrument.get_instrument_details #fills out Instrument object details
+       # show_instrument_details(instrument)
+       
+      
+    end
+
+    # def show_instrument_details()
+    # end
 
 end
