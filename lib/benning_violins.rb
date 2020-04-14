@@ -9,6 +9,8 @@ require 'pry'
 require 'nokogiri'
 require 'open-uri'
 require 'colorize'
+require 'word_wrap'
+require 'word_wrap/core_ext'
 
 
 module BenningViolins

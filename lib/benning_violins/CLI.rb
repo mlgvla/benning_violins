@@ -23,7 +23,7 @@ class BenningViolins::CLI
         puts "Please select an instrument to see our current collection.".colorize(:light_magenta)
         puts ""
         @inventories.each.with_index(1) do |inv, index|
-            puts "#{index}. #{inv.name}"        
+            puts "#{index}. ".colorize(:light_blue) + "#{inv.name}"        
         end
     end
 
@@ -39,9 +39,11 @@ class BenningViolins::CLI
     def show_instruments_for(inventory_choice)
         inventory = @inventories[inventory_choice - 1]
         inventory.get_instruments
-        puts "Here is our current inventory of #{inventory.name}:"
+        puts ""
+        puts "Here is our current inventory of #{inventory.name}:".colorize(:light_magenta)
+        puts ""
         inventory.instruments.each.with_index(1) do |ins, index|
-            puts "#{index}. #{ins.name}"
+            puts "#{index}. ".colorize(:light_blue) + "#{ins.name}"
         end
         get_user_instrument(inventory)
     end
@@ -49,7 +51,7 @@ class BenningViolins::CLI
     def get_user_instrument(inventory)
         puts ""
         puts "Please enter a number to get more details.".colorize(:light_magenta)
-        instrument_choice = gets.strip
+        instrument_choice = gets.strip #validate!!!!!!!!!!!!!
         instrument = inventory.instruments[instrument_choice.to_i - 1] # selects Instrument object
       
         instrument.get_instrument_details #fills out Instrument object details
@@ -60,29 +62,29 @@ class BenningViolins::CLI
         puts ""
         puts "#{instrument.name}".colorize(:light_magenta)
         puts ""
-        puts "Year: #{instrument.year}"
+        puts "Year: ".colorize(:light_blue) + "#{instrument.year}"
         puts ""
-        puts "Price: #{instrument.price}"
+        puts "Price: ".colorize(:light_blue) + "#{instrument.price}"
         puts ""
-        puts "Maker: #{instrument.maker}"
+        puts "Maker: ".colorize(:light_blue) + "#{instrument.maker}"
         puts ""
-        puts "Description: #{instrument.description}"
+        puts "Description: ".colorize(:light_blue) + "#{instrument.description}".wrap
         puts ""
-        puts "Terms: #{instrument.terms}"
+        puts "Terms: ".colorize(:light_blue) + "#{instrument.terms}".wrap
         puts ""
-        puts "To view images of this item, please visit:"
+        puts "To view images of this item, please visit:".colorize(:light_magenta)
         puts ""
-        puts "https://www.benningviolins.com" + "#{instrument.url}"
+        puts "https://www.benningviolins.com".colorize(:light_blue) + "#{instrument.url}".colorize(:light_blue)
         puts ""
 
     end
 
     def next_move
-        puts "Please hit any key to check out more of our collection or 'exit' to finish browsing."
+        puts "Please hit any key to check out more of our collection or 'exit' to finish browsing.".colorize(:light_magenta)
         @input = gets.strip
     end 
 
     def sign_off
-        puts "Thank you for visiting Benning Violins!"
+        puts "Thank you for visiting Benning Violins!".colorize(:light_blue)
     end
 end
