@@ -8,6 +8,8 @@ require_relative "./benning_violins/scraper"
 require 'pry'
 require 'nokogiri'
 require 'open-uri'
+require 'colorize'
+
 
 module BenningViolins
   class Error < StandardError; end

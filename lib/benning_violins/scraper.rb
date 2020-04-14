@@ -49,41 +49,38 @@ class BenningViolins::Scraper
     end
   end
 
-       #Rename some of the instance variables to make some sense!
+  def self.scrape_instrument_details(instrument)
+      #tyear, price, maker, description, terms(might eliminate category later)
+      
+    site = BASE_PATH + instrument.url
+    
+  
+    doc = Nokogiri::HTML(open(site))
+    
+    details = doc.css("div.djc_fulltext p")
+  
+    details.each do |detail|
 
-    def self.scrape_instrument_details(instrument)
-        #tyear, price, maker, description, terms(might eliminate category later)
-        
-        site = BASE_PATH + instrument.url
-        
+      nbsp = Nokogiri::HTML("&nbsp;").text #convert HTML nbsp to text nbsp
+      new_detail = detail.text.sub(/^[^:]+:\s*/, "") #delete label
+      final_detail = new_detail.sub(nbsp, "") #delete text nbsp
       
-        doc = Nokogiri::HTML(open(site))
-        
-        details = doc.css("div.djc_fulltext p")
-      
-        details.each do |detail|
-            nbsp = Nokogiri::HTML("&nbsp;").text #convert HTML nbsp to text nbsp
-            new_detail = detail.text.sub(/^[^:]+:\s*/, "") #delete label
-            final_detail = new_detail.sub(nbsp, "") #delete text nbsp
-           
-            label = detail.css("strong").text.strip.downcase #details label is in <strong> tag
-            #convert label to lower case
-         
-            if label.include?("maker")
-            instrument.maker = final_detail 
-            elsif label.include?("year") || label.include?("circa")
-              instrument.year = final_detail.to_i 
-            elsif label.include?("price")
-              instrument.price = final_detail            
-            elsif label.include?("description")
-              instrument.description = final_detail            
-            elsif label.include?("terms")
-              instrument.terms = final_detail 
-            end
-       end
-       binding.pry
-      # return instrument_details_hash
+      label = detail.css("strong").text.strip.downcase #details label is in <strong> tag
+      #convert label to lower case
+    
+      if label.include?("maker")
+      instrument.maker = final_detail 
+      elsif label.include?("year") || label.include?("circa")
+        instrument.year = final_detail
+      elsif label.include?("price")
+        instrument.price = final_detail            
+      elsif label.include?("description")
+        instrument.description = final_detail            
+      elsif label.include?("terms")
+        instrument.terms = final_detail 
+      end
     end
+  end
 end
 
 

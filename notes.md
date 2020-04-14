@@ -24,7 +24,7 @@
 3. Instrument Class
     - Creates instances of Instrument Objects
     - Calls on Scraper Class to fill Instrument Objects attributes
-    - Instrument object has a :name, :maker, :price, :description, :terms
+    - Instrument object has a :name, :maker,:year :price, :description, :terms
     - Class stores an array of Instrument Objects (@@all)
     - Class can retrive its stored objects
     - An Instrument belongs to a Category
@@ -33,7 +33,7 @@
     - Scrapes Benning Violin website sales page for inventory choices
     - Scrapes inventory page when called and makes key/value pairs with scraped data
     - Scrapes details 
-    - returns scrape_instruments returns instrument hash
+    - Creates Inventory and Instrument Objects to hold scraped data
 
 
 

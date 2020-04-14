@@ -6,7 +6,6 @@ class BenningViolins::Inventory
     #BASE_PATH = "https://www.benningviolins.com/" 
 
     def initialize(name, url)
-
         @name = name
         @url = url
         @instruments =[] #an Inventory has many instruments
@@ -14,7 +13,6 @@ class BenningViolins::Inventory
     end
 
     def self.all
-
         BenningViolins::Scraper.scrape_inventory if @@all.empty?
         @@all 
     end
