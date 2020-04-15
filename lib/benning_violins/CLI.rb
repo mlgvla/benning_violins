@@ -29,11 +29,12 @@ class BenningViolins::CLI
 
     def get_user_inventory
         inventory_choice = gets.strip.to_i
-        show_instruments_for(inventory_choice) if valid_input?(inventory_choice)
+        show_instruments_for(inventory_choice) if valid_input?(@inventories, inventory_choice)
+        #add usser prompt for correct number range
     end
 
-    def valid_input?(choice) # generalize this to valid all inputs. Add array argument.
-        choice.to_i <= @inventories.length && choice.to_i > 0        
+    def valid_input?(array, choice)
+        choice.to_i <= array.length && choice.to_i > 0        
     end
 
     def show_instruments_for(inventory_choice)
@@ -51,11 +52,14 @@ class BenningViolins::CLI
     def get_user_instrument(inventory)
         puts ""
         puts "Please enter a number to get more details.".colorize(:light_magenta)
-        instrument_choice = gets.strip #validate!!!!!!!!!!!!!
-        instrument = inventory.instruments[instrument_choice.to_i - 1] # selects Instrument object
-      
-        instrument.get_instrument_details #fills out Instrument object details
-        show_instrument_details(instrument)       
+        instrument_choice = gets.strip
+       
+        if valid_input?(inventory.instruments, instrument_choice)
+            instrument = inventory.instruments[instrument_choice.to_i - 1] # selects Instrument object
+            instrument.get_instrument_details #fills out Instrument object details
+            show_instrument_details(instrument) 
+        end  
+        #add a user prompt for correct number range    
     end
 
     def show_instrument_details(instrument)
@@ -75,16 +79,17 @@ class BenningViolins::CLI
         puts "To view images of this item, please visit:".colorize(:light_magenta)
         puts ""
         puts "https://www.benningviolins.com".colorize(:light_blue) + "#{instrument.url}".colorize(:light_blue)
-        puts ""
-
     end
 
     def next_move
+        puts ""
         puts "Please hit any key to check out more of our collection or 'exit' to finish browsing.".colorize(:light_magenta)
         @input = gets.strip
     end 
 
     def sign_off
+        puts ""
         puts "Thank you for visiting Benning Violins!".colorize(:light_blue)
+        puts ""
     end
 end

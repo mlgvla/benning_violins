@@ -67,7 +67,8 @@ class BenningViolins::Scraper
       
       label = detail.css("strong").text.strip.downcase #details label is in <strong> tag
       #convert label to lower case
-    
+      
+      # If a value is empty, add N/A?
       if label.include?("maker")
       instrument.maker = final_detail 
       elsif label.include?("year") || label.include?("circa")
