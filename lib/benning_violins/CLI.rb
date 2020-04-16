@@ -28,9 +28,11 @@ class BenningViolins::CLI
     end
 
     def get_user_inventory
+        puts ""
+        prompt = "Please enter a number between 1 and #{@inventories.length} to see the inventory for your selection.".colorize(:light_magenta)
+        puts prompt
         inventory_choice = gets.strip.to_i
-        show_instruments_for(inventory_choice) if valid_input?(@inventories, inventory_choice)
-        #add usser prompt for correct number range
+        valid_input?(@inventories, inventory_choice)? show_instruments_for(inventory_choice) : get_user_inventory
     end
 
     def valid_input?(array, choice)
@@ -51,15 +53,18 @@ class BenningViolins::CLI
 
     def get_user_instrument(inventory)
         puts ""
-        puts "Please enter a number to get more details.".colorize(:light_magenta)
+        prompt = "Please enter a number between 1 and #{inventory.instruments.length} to get more details.".colorize(:light_magenta)
+        puts prompt
+        #puts "Please enter a number to get more details.".colorize(:light_magenta)
         instrument_choice = gets.strip
        
         if valid_input?(inventory.instruments, instrument_choice)
             instrument = inventory.instruments[instrument_choice.to_i - 1] # selects Instrument object
             instrument.get_instrument_details #fills out Instrument object details
-            show_instrument_details(instrument) 
-        end  
-        #add a user prompt for correct number range    
+            show_instrument_details(instrument)
+        else
+             get_user_instrument(inventory)
+        end   
     end
 
     def show_instrument_details(instrument)
