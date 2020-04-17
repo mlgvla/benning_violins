@@ -23,7 +23,11 @@ class BenningViolins::CLI
         puts "Please select an instrument to see our current collection.".colorize(:light_magenta)
         puts ""
         @inventories.each.with_index(1) do |inv, index|
-            puts "#{index}. ".colorize(:light_blue) + "#{inv.name}"        
+            if inv.name.downcase == "benning"
+                puts "#{index}. ".colorize(:light_blue) + "#{inv.name}" + " Instruments" 
+            else      
+                puts "#{index}. ".colorize(:light_blue) + "#{inv.name}" 
+            end       
         end
     end
 
@@ -71,15 +75,15 @@ class BenningViolins::CLI
         puts ""
         puts "#{instrument.name}".colorize(:light_magenta)
         puts ""
-        puts "Year: ".colorize(:light_blue) + "#{instrument.year}"
+        puts "Year: ".colorize(:light_blue) +  (instrument.year == "" || instrument.year == nil ? "N/A" : "#{instrument.year}")
         puts ""
-        puts "Price: ".colorize(:light_blue) + "#{instrument.price}"
+        puts "Price: ".colorize(:light_blue) + (instrument.price == "" || instrument.price == nil ? "N/A" : "#{instrument.price}")
         puts ""
-        puts "Maker: ".colorize(:light_blue) + "#{instrument.maker}"
+        puts "Maker: ".colorize(:light_blue) + (instrument.maker == "" || instrument.maker == nil  ? "N/A" : "#{instrument.maker}")
         puts ""
-        puts "Description: ".colorize(:light_blue) + "#{instrument.description}".wrap
+        puts "Description: ".colorize(:light_blue) + (instrument.description == "" || instrument.description == nil ? "N/A" : "#{instrument.description}".wrap)
         puts ""
-        puts "Terms: ".colorize(:light_blue) + "#{instrument.terms}".wrap
+        puts "Terms: ".colorize(:light_blue) + (instrument.terms == "" || instrument.terms == nil ? "N/A" : "#{instrument.terms}".wrap)
         puts ""
         puts "To view images of this item, please visit:".colorize(:light_magenta)
         puts ""
