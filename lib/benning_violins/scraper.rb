@@ -53,9 +53,16 @@ class BenningViolins::Scraper
       #tyear, price, maker, description, terms(might eliminate category later)
       
     site = BASE_PATH + instrument.url
+
+    begin
+    opened_site = open(site)
     
+    rescue OpenURI::HTTPError
+      puts "Page Not Found.  Details Not Avaiable for this Selection."
+      return
+    end
   
-    doc = Nokogiri::HTML(open(site))
+    doc = Nokogiri::HTML(open(opened_site))
     
     details = doc.css("div.djc_fulltext p")
   
