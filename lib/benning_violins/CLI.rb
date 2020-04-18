@@ -2,7 +2,7 @@ class BenningViolins::CLI
 
     def call
         puts ""
-        puts "Welcome to Benning Violins".colorize(:light_blue)
+        puts "Welcome to Benning Violins".colorize(:light_blue) 
         @input = "" #user either continues or exits program
         until @input == "exit"
             get_inventories
@@ -33,7 +33,7 @@ class BenningViolins::CLI
 
     def get_user_inventory
         puts ""
-        prompt = "Please enter a number between 1 and #{@inventories.length} to see the inventory for your selection or 'exit' to finish browsing.".colorize(:light_magenta)
+        prompt = "Please enter a number between 1 and #{@inventories.length} to see the inventory for your selection.".colorize(:light_magenta)
         puts prompt
         inventory_choice = gets.strip.to_i
         valid_input?(@inventories, inventory_choice)? show_instruments_for(inventory_choice) : get_user_inventory

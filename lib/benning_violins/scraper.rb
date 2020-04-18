@@ -50,7 +50,7 @@ class BenningViolins::Scraper
   end
 
   def self.scrape_instrument_details(instrument)
-      #tyear, price, maker, description, terms(might eliminate category later)
+      #year, price, maker, description, terms(might eliminate category later)
       
     site = BASE_PATH + instrument.url
 
