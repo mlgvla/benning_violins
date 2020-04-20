@@ -58,7 +58,7 @@ class BenningViolins::Scraper
     opened_site = open(site)
     
     rescue OpenURI::HTTPError
-      puts "Page Not Found.  Details Not Avaiable for this Selection."
+      puts "Page Not Found.  Details Not Available for this Selection."
       return
     end
   
