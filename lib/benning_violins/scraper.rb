@@ -4,7 +4,7 @@ class BenningViolins::Scraper
   def self.scrape_inventory
     
     site = BASE_PATH + "Fine-Instrument-Catalog-Violins-Violas-Cellos-Bows.html"
-    doc = Nokogiri::HTML(open(site))
+    doc = Nokogiri::HTML(URI.open(site))
 
     inventories = doc.css("div.djc_clearfix div.djc_subcategory")
 
@@ -23,7 +23,7 @@ class BenningViolins::Scraper
     #additional method called by scrape_inventory to scrape the nested menu choice of bow type
 
     site = BASE_PATH + "Fine-Bows-Catalog-Fine-Violin-Viola-Cello-Bows-for-Sale.html"
-    doc = Nokogiri::HTML(open(site))
+    doc = Nokogiri::HTML(URI.open(site))
 
     inventories = doc.css("div.djc_clearfix  div.djc_subcategory")
 
@@ -37,7 +37,7 @@ class BenningViolins::Scraper
   def self.scrape_instruments(inventory)
     
     site = BASE_PATH + inventory.url
-    doc = Nokogiri::HTML(open(site))
+    doc = Nokogiri::HTML(URI.open(site))
 
     instruments = doc.css("div.djc_items .djc_item")
 
@@ -55,14 +55,14 @@ class BenningViolins::Scraper
     site = BASE_PATH + instrument.url
 
     begin
-    opened_site = open(site)
+    opened_site = URI.open(site)
     
     rescue OpenURI::HTTPError
       puts "Page Not Found.  Details Not Available for this Selection."
       return
     end
   
-    doc = Nokogiri::HTML(open(opened_site))
+    doc = Nokogiri::HTML(URI.open(opened_site))
     
     details = doc.css("div.djc_fulltext p")
   
